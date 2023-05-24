@@ -6,11 +6,11 @@ export default function decorate(block) {
     let cfPersistedQuery = block.textContent;
     let options = {};
     console.log(window.location.ancestorOrigins.length);
-    if(window.location.ancestorOrigins.length > 0) {
-        console.log("Using Author");
-        cfPersistedQuery = cfPersistedQuery.replace("publish", "author");
-        options = {credentials: "include"};
-    }
+    // if(window.location.ancestorOrigins.length > 0) {
+    //     console.log("Using Author");
+    //     // cfPersistedQuery = cfPersistedQuery.replace("publish", "author");
+    //     // options = {credentials: "include"};
+    // }
 
     const cfReq = fetch(cfPersistedQuery.trim()+"?ts="+Math.random()*1000, options)
     .then((response) => response.json())
@@ -23,7 +23,7 @@ export default function decorate(block) {
             cfList.forEach(cf => {
                 let imageUrl = '';
                 let description = '';
-                    imageUrl = cf.heroImage["_publishUrl"];
+                    imageUrl = cf.image._publishUrl;
                     description = cf.main["plaintext"];
                     const cfElem = document.createElement('li', {"class": "article-item"});
                     cfElem.setAttribute("class", "article-item");
