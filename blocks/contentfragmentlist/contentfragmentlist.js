@@ -1,11 +1,10 @@
-import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
-
 export default async function decorate(block) {
-    let persistedQuery = block.textContent;
-    
+    const isUE = isUniversalEditorActive();
+    const persistedQuery = (isUE) ? useAuthorQuery(persistedQuery) : block.textContent;
     const categories = await getCategories(persistedQuery);
-
+    
     const root = document.createElement('ul', {"class": "article-items"});
+    
     categories.forEach((category) => {
         const elem = document.createElement('li');
         elem.setAttribute("class", "article-item");
@@ -41,7 +40,7 @@ export default async function decorate(block) {
  * @return {Promise<Category[]>} results 
  */
 async function getCategories(persistedQuery) {
-    const json = await fetch(persistedQuery.trim()+"&ts="+Math.random()*1000)
+    const json = await fetch(persistedQuery.trim()+"&ts="+Math.random()*1000, {credentials: "include"})
         .then((response) => response.json());
     const items = json?.data?.categoryList?.items || []
     return items.map((item) => {
@@ -57,4 +56,20 @@ async function getCategories(persistedQuery) {
         };
     });
 
+}
+/**
+ * Detects whether the site is embedded in the universal editor by counting parent frames
+ * @returns {boolean}
+ */
+function isUniversalEditorActive() {
+    return window.location.ancestorOrigins > 0;
+}
+
+/**
+ * Update the persisted query url to use the authoring endpoint
+ * @param {string} persistedQuery 
+ * @returns {string}
+ */
+function useAuthorQuery(persistedQuery) {
+    return persistedQuery.replace("//publish-", "//author-");
 }
