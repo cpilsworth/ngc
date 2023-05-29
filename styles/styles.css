@@ -15,19 +15,21 @@
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
   --background-color: #fff;
-  --overlay-background-color: #eee;
-  --highlight-background-color: #ccc;
-  --text-color: #000;
+  --overlay-background-color: #f7f9f9;
+  --highlight-background-color: #2b0e43;
+  --text-color: #405;
+  --text-color-light: #817c89;
+  --header-text-color: #403b49;
+  --light-text-color: #f7f9f9;
 
-  /* fonts */
-  --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
+  --body-font-family: 'Gill Sans', Calibri, sans-serif;
   --heading-font-family: var(--body-font-family);
   --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
   --body-font-size-m: 22px;
   --body-font-size-s: 18px;
-  --body-font-size-xs: 16px;
+  --body-font-size-xs: 13px;
 
   /* heading sizes */
   --heading-font-size-xxl: 48px;
@@ -44,8 +46,8 @@
 
 @media (min-width: 900px) {
   :root {
-    --heading-font-size-xxl: 60px;
-    --heading-font-size-xl: 48px;
+    --heading-font-size-xxl: 30px;
+    --heading-font-size-xl: 28px;
     --heading-font-size-l: 36px;
     --heading-font-size-m: 30px;
     --heading-font-size-s: 24px;
@@ -211,8 +213,8 @@ main img {
 
 .icon {
   display: inline-block;
-  height: 24px;
-  width: 24px;
+  height: auto;
+  width: 105px;
 }
 
 .icon svg {
@@ -240,4 +242,29 @@ main .section {
 /* section metadata */
 main .section.highlight {
   background-color: var(--highlight-background-color);
+  color: var(--light-text-color)
 }
+
+main .section.highlight .default-content-wrapper {
+  width: 40%;
+}
+
+
+main .section.buttons {
+  background-color: var(--overlay-background-color);
+}
+
+main .section.buttons div p {
+  text-align: center;
+}
+
+main .section.buttons div p a {
+  font-size: 9pt;
+  font-weight: 500;
+  text-align: center;
+  color: var(--text-color);
+  border-radius: 4px;
+  border: 1px solid var(--text-color);
+  margin: 0 0 1rem;
+  padding: 9pt 24px;
+} 
