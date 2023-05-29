@@ -1,3 +1,9 @@
+.columns {
+  display: flex;
+  flex-direction: column;
+  gap: 75px;
+}
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +36,13 @@
     flex: 1;
     order: unset;
   }
+}
+
+
+div.columns > div:nth-child(2) {
+  background-color: var(--highlight-background-color);
+}
+
+div.columns > div:nth-child(3) {
+  background-color: var(--overlay-background-color);
 }
