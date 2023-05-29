@@ -40,7 +40,8 @@ export default async function decorate(block) {
  * @return {Promise<Category[]>} results 
  */
 async function getCategories(persistedQuery) {
-    const json = await fetch(persistedQuery.trim()+"&ts="+Math.random()*1000, {
+    const url = addCacheKiller(persistedQuery);
+    const json = await fetch(url, {
         credentials: "include"
     }).then((response) => response.json());
     const items = json?.data?.categoryList?.items || []
@@ -73,4 +74,16 @@ function isUniversalEditorActive() {
  */
 function useAuthorQuery(persistedQuery) {
     return persistedQuery.replace("//publish-", "//author-");
+}
+
+/**
+ * Updates url to contain a query parameter to prevent caching
+ * @param {string} url 
+ * @returns url with cache killer query parameter
+ */
+function addCacheKiller(url) {
+    let newUrl = new URL(url);
+    let params = newUrl.searchParams;
+    params.append("ck", Date.now());
+    return newUrl.toString();
 }
