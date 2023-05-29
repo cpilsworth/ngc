@@ -16,7 +16,7 @@ export default async function decorate(block) {
             <div class="category-item-image">
                 <picture>
                     <source type="image/webp" srcset="${category.image.url}?preferweb=true" media="(min-width: 600px)">
-                    <source type="image/webp" srcset="${category.image.url}?preferweb=true&width=750>
+                    <source type="image/webp" srcset="${category.image.url}?preferweb=true&width=750">
                     <source type="${category.image.mimeType}" srcset="${category.image.url}" media="(min-width: 600px)">
                     <img src="${category.image.url}" width="${category.image.width}" height="${category.image.height}" alt="${category.title}" type="${category.image.mimeType}" itemprop="primaryImage" itemtype="image" loading="lazy">
                 </picture>
@@ -47,14 +47,16 @@ export default async function decorate(block) {
  * @param {string} persistedQuery
  * @return {Promise<Category[]>} results 
  */
-async function getCategories(persistedQuery) {
+async function getCategories(persistedQuery, isUE) {
     const url = addCacheKiller(persistedQuery);
+
     const json = await fetch(url, {
         credentials: "include"
     }).then((response) => response.json());
     const items = json?.data?.categoryList?.items || []
+
     return items.map((item) => {
-        const publishUrl = new URL(item.image["_publishUrl"]);
+        const imageUrl = getImageUrl(item.image, isUE);
         return {
             _path: item._path,
             title: item.title,
@@ -64,14 +66,13 @@ async function getCategories(persistedQuery) {
                 link: item.ctaLink,
             },
             image: {
-                url: `https://${publishUrl.hostname}${item.image["_dynamicUrl"]}`,
+                url: imageUrl,
                 width: item.image["width"],
                 height: item.image["height"],
                 mimeType: item.image["mimeType"],
             },
         };
     });
-
 }
 /**
  * Detects whether the site is embedded in the universal editor by counting parent frames
@@ -100,4 +101,13 @@ function addCacheKiller(url) {
     let params = newUrl.searchParams;
     params.append("ck", Date.now());
     return newUrl.toString();
+}
+
+
+function getImageUrl(image, isUE) {
+    if (isUE) { 
+        return image["_authoreUrl"];
+    }
+    const url = new URL(image["_publishUrl"])
+    return `https://${url.hostname}${image["_dynamicUrl"]}`
 }
