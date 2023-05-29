@@ -106,7 +106,7 @@ function addCacheKiller(url) {
 
 function getImageUrl(image, isUE) {
     if (isUE) { 
-        return image["_authoreUrl"];
+        return image["_authorUrl"];
     }
     const url = new URL(image["_publishUrl"])
     return `https://${url.hostname}${image["_dynamicUrl"]}`
