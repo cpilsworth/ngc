@@ -1,6 +1,6 @@
 export default async function decorate(block) {
     const isUE = isUniversalEditorActive();
-    const persistedQuery = (isUE) ? useAuthorQuery(persistedQuery) : block.textContent;
+    const persistedQuery = (isUE) ? useAuthorQuery(block.textContent) : block.textContent;
     const categories = await getCategories(persistedQuery, isUE);
     
     const root = document.createElement('div');
