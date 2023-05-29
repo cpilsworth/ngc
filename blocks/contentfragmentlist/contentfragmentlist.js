@@ -3,20 +3,29 @@ export default async function decorate(block) {
     const persistedQuery = (isUE) ? useAuthorQuery(persistedQuery) : block.textContent;
     const categories = await getCategories(persistedQuery);
     
-    const root = document.createElement('ul', {"class": "article-items"});
+    const root = document.createElement('div');
+    root.setAttribute("class", "category-list");
     
     categories.forEach((category) => {
-        const elem = document.createElement('li');
-        elem.setAttribute("class", "article-item");
+        const elem = document.createElement('div');
+        elem.setAttribute("class", "category-item");
         elem.setAttribute("itemscope", "");
         elem.setAttribute("itemid", `urn:aemconnection:${category._path}/jcr:content/data/master`);
         elem.setAttribute("itemtype", "reference");
         elem.innerHTML = `
-            <img class="article-item-image" src="${category.image}" alt="${category.title}" itemprop="primaryImage" itemtype="image" loading="lazy">
-            <div class="article-item-title" itemprop="title" itemtype="text">
-                <h5>${category.title}</h5></div>
+            <div class="category-item-image">
+                <picture>
+                    <source type="image/webp" srcset="${category.image.url}?preferweb=true" media="(min-width: 600px)">
+                    <source type="image/webp" srcset="${category.image.url}?preferweb=true&width=750>
+                    <source type="${category.image.mimeType}" srcset="${category.image.url}" media="(min-width: 600px)">
+                    <img loading="eager" alt="${category.title}" type="${category.image.mimeType}" src="${category.image.url}" width="${category.image.width}" height="${category.image.height}">
+                </picture>
+                <img src="${category.image.url}" alt="${category.title}" itemprop="primaryImage" itemtype="image" loading="lazy">
             </div>
-            <div class="article-item-desc" itemprop="main" itemtype="richtext">${category.description}</div>`;
+            <div class="category-item-content">
+                <h5 class="category-item-title" itemprop="title" itemtype="text">${category.title}</h5>
+                <p class="category-item-desc" itemprop="main" itemtype="richtext">${category.description}</p>
+            </div>`;
         root.appendChild(elem);
     });
     block.textContent = "";
@@ -46,6 +55,7 @@ async function getCategories(persistedQuery) {
     }).then((response) => response.json());
     const items = json?.data?.categoryList?.items || []
     return items.map((item) => {
+        const publishUrl = new URL(item.image["_publishUrl"]);
         return {
             _path: item._path,
             title: item.title,
@@ -54,7 +64,12 @@ async function getCategories(persistedQuery) {
                 text: item.ctaText,
                 link: item.ctaLink,
             },
-            image: new URL(item.image["_publishUrl"]),
+            image: {
+                url: `https://${publishUrl.hostname}${item.image["_dynamicUrl"]}`,
+                width: item.image["width"],
+                height: item.image["height"],
+                mimeType: item.image["mimeType"],
+            },
         };
     });
 
