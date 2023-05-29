@@ -15,9 +15,9 @@ export default async function decorate(block) {
         elem.innerHTML = `
             <div class="category-item-image">
                 <picture>
-                    <source type="image/webp" srcset="${category.image.url}?preferweb=true" media="(min-width: 600px)">
-                    <source type="image/webp" srcset="${category.image.url}?preferweb=true&width=750">
-                    <source type="${category.image.mimeType}" srcset="${category.image.url}" media="(min-width: 600px)">
+                    <source type="image/webp" srcset="${category.image.deliveryUrl}?preferweb=true" media="(min-width: 600px)">
+                    <source type="image/webp" srcset="${category.image.deliveryUrl}?preferweb=true&width=750">
+                    <source type="${category.image.mimeType}" srcset="${category.image.deliveryUrl}" media="(min-width: 600px)">
                     <img src="${category.image.url}" width="${category.image.width}" height="${category.image.height}" alt="${category.title}" type="${category.image.mimeType}" itemprop="primaryImage" itemtype="image" loading="lazy">
                 </picture>
             </div>
@@ -67,6 +67,7 @@ async function getCategories(persistedQuery, isUE) {
             },
             image: {
                 url: imageUrl,
+                deliveryUrl: getImageUrl(item.image, false),
                 width: item.image["width"],
                 height: item.image["height"],
                 mimeType: item.image["mimeType"],
