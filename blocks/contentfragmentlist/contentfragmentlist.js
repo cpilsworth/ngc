@@ -40,8 +40,9 @@ export default async function decorate(block) {
  * @return {Promise<Category[]>} results 
  */
 async function getCategories(persistedQuery) {
-    const json = await fetch(persistedQuery.trim()+"&ts="+Math.random()*1000, {credentials: "include"})
-        .then((response) => response.json());
+    const json = await fetch(persistedQuery.trim()+"&ts="+Math.random()*1000, {
+        credentials: "include"
+    }).then((response) => response.json());
     const items = json?.data?.categoryList?.items || []
     return items.map((item) => {
         return {
