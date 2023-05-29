@@ -79,7 +79,7 @@ async function getCategories(persistedQuery, isUE) {
  * @returns {boolean}
  */
 function isUniversalEditorActive() {
-    return window.location.ancestorOrigins > 0;
+    return window.location.ancestorOrigins?.length > 0;
 }
 
 /**
