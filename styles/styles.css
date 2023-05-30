@@ -234,7 +234,7 @@ main .section {
 
 @media (min-width: 900px) {
   .section > div {
-    /* max-width: 1200px; */
+    max-width: 1440px;
     margin: auto;
   }
 }
@@ -267,6 +267,14 @@ main .section.buttons div p a {
   border: 1px solid var(--text-color);
   margin: 0 0 1rem;
   padding: 9pt 24px;
+} 
+
+main .section.buttons div p a:hover {
+  color: #f7f9f9;
+  background-color: var(--text-color);
+  margin: 0 0 1rem;
+  padding: 9pt 24px;
+  text-decoration: none;
 } 
 
 
