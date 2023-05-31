@@ -277,6 +277,20 @@ main .section.buttons div p a {
   min-height: 48px;
 } 
 
+@media (max-width: 900px) {
+  main .section.buttons div p {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 18px;
+  }
+
+  main .section.buttons div p {
+    line-height: calc(2em + 25px);
+  }
+}
+
+
 main .section.buttons div p a:hover {
   color: #f7f9f9;
   background-color: var(--text-color);
