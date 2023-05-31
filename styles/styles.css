@@ -273,6 +273,8 @@ main .section.buttons div p a {
   border: 1px solid var(--text-color);
   margin: 0 0 1rem;
   padding: 9pt 24px;
+  min-width: 48px;
+  min-height: 48px;
 } 
 
 main .section.buttons div p a:hover {
