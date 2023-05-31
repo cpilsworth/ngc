@@ -46,4 +46,8 @@ footer .footer div div{
   margin-left: auto;
 }
 
+footer .footer div div h3#support {
+  display: none;
+}
+
 
