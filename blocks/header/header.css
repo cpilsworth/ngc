@@ -1,11 +1,11 @@
 /* header and nav layout */
 header .nav-wrapper {
+  box-sizing: border-box;
   background-color: var(--background-color);
   border-bottom: 1px solid #e5e5e5;
   width: 100%;
   z-index: 2;
   position: fixed;
-  padding: 16px 0;
 }
 
 header nav {
