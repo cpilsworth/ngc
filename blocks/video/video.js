@@ -11,6 +11,7 @@ export default async function decorate(block) {
     block.innerHTML = `
     <video muted autoplay>
       <source src="${source}" type="video/${source.split('.').pop()}" >
+      <track default src="/scripts/captions.vtt" kind="captions" srclang="en" label="captions" hidden>
     </video>
     `;
   }
