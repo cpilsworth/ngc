@@ -1,3 +1,5 @@
 .video video {
     max-width: 640px;
+    content-visibility: auto;
+    contain-intrinsic-size: 360px;
 }

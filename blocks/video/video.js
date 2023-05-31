@@ -9,7 +9,7 @@ export default async function decorate(block) {
   if (a) {
     const source = a.href;
     block.innerHTML = `
-    <video muted autoplay>
+    <video muted autoplay loop>
       <source src="${source}" type="video/${source.split('.').pop()}" >
       <track default src="/scripts/captions.vtt" kind="captions" srclang="en" label="captions" hidden>
     </video>
