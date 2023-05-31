@@ -23,7 +23,7 @@ export default async function decorate(block) {
             </div>
             <div class="category-item-content">
                 <h5 class="category-item-title" itemprop="title" itemtype="text">${category.title}</h5>
-                <p class="category-item-desc" itemprop="main" itemtype="richtext">${category.description}</p>
+                <p class="category-item-desc" itemprop="description" itemtype="richtext">${category.description}</p>
             </div>`;
         root.appendChild(elem);
     });
