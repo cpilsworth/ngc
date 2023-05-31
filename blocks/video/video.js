@@ -6,11 +6,14 @@
 
 export default async function decorate(block) {
   const a = block.querySelector('a');
+  const img = block.querySelector('img');
+  const poster = img ? `poster="${img.src}"` : '';
+
   if (a) {
     const source = a.href;
     block.innerHTML = `
     <video muted autoplay loop>
-      <source src="${source}" type="video/${source.split('.').pop()}" >
+      <source src="${source}" type="video/${source.split('.').pop()}" ${poster}>
       <track default src="/scripts/captions.vtt" kind="captions" srclang="en" label="captions" hidden>
     </video>
     `;
