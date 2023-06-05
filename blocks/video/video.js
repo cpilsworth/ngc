@@ -16,7 +16,7 @@ export default async function decorate(block) {
       <source data-src="${source}" type="video/${
       source.split(".").pop()
     }" ${poster}>
-      <track default src="/scripts/captions.vtt" kind="captions" srclang="en" label="captions" hidden>
+      <track default src="/scripts/captions.vtt" kind="captions" srclang="en" label="captions">
     </video>
     `;
   }
