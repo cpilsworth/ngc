@@ -1,6 +1,7 @@
 import {
   sampleRUM,
   buildBlock,
+  getMetadata,
   loadHeader,
   loadFooter,
   decorateButtons,
@@ -11,9 +12,11 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  toClassName,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
+window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
 // Define the custom audiences mapping for experimentation
 const EXPERIMENTATION_CONFIG = {
@@ -72,6 +75,15 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
+
+  // load experiments
+  const experiment = toClassName(getMetadata('experiment'));
+  const instantExperiment = getMetadata('instant-experiment');
+  if (instantExperiment || experiment) {
+    const { runExperiment } = await import('./experimentation/index.js');
+    await runExperiment(experiment, instantExperiment, EXPERIMENTATION_CONFIG);
+  }
+
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
@@ -79,6 +91,23 @@ async function loadEager(doc) {
     decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
+  }
+}
+
+/**
+ * Adds the favicon.
+ * @param {string} href The favicon URL
+ */
+export function addFavIcon(href) {
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/svg+xml';
+  link.href = href;
+  const existingLink = document.querySelector('head link[rel="icon"]');
+  if (existingLink) {
+    existingLink.parentElement.replaceChild(link, existingLink);
+  } else {
+    document.getElementsByTagName('head')[0].appendChild(link);
   }
 }
 
@@ -98,19 +127,20 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.ico`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
-  // Load experimentation preview overlay
-  if (window.location.hostname === 'localhost' || window.location.hostname.endsWith('.hlx.page')) {
-    const preview = await import(`${window.hlx.codeBasePath}/tools/preview/preview.js`);
-    await preview.default();
-    if (window.hlx.experiment) {
-      const experimentation = await import(`${window.hlx.codeBasePath}/tools/preview/experimentation.js`);
-      experimentation.default();
+    // Load experimentation preview overlay
+    if (window.location.hostname === 'localhost' || window.location.hostname.endsWith('.hlx.page')) {
+      const preview = await import(`${window.hlx.codeBasePath}/tools/preview/preview.js`);
+      await preview.default();
+      if (window.hlx.experiment) {
+        const experimentation = await import(`${window.hlx.codeBasePath}/tools/preview/experimentation.js`);
+        experimentation.default();
+      }
     }
-  }
 }
 
 /**

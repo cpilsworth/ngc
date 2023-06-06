@@ -22,7 +22,7 @@ export function createButton(label) {
   const button = document.createElement('button');
   button.className = 'hlx-badge';
   const text = document.createElement('span');
-  text.innerHTML = "Experiment: PRU0017";
+  text.innerHTML = "Experiment: ASP0017";
   button.append(text);
   return button;
 }
@@ -48,7 +48,7 @@ export function createPopupDialog(header, items = []) {
   popup.className = 'hlx-popup hlx-hidden';
   popup.innerHTML = `
     <div class="hlx-popup-header">
-      <h5 class="hlx-popup-header-label">Instant Experiment: PRU0017</h5>
+      <h5 class="hlx-popup-header-label">Instant Experiment: ASP0017</h5>
       <div class="hlx-popup-header-description">Active, Blocks: Banner<br>Showing results for 11k visits and 4.1k conversions: not yet enough data to determine a winner. Keep going for 29 days until you get 67k visits.</div>
       ${actions.length ? `<div class="hlx-popup-header-actions">${actions}</div>` : ''}
     </div>
