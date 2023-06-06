@@ -390,6 +390,28 @@ export function buildBlock(blockName, content) {
 }
 
 /**
+ * Gets the configuration for the given glock, and also passes
+ * the config to the `patchBlockConfig` methods in the plugins.
+ *
+ * @param {Element} block The block element
+ * @returns {object} The block config (blockName, cssPath and jsPath)
+ */
+function getBlockConfig(block) {
+  const blockName = block.getAttribute('data-block-name');
+  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
+  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
+
+  if (!window.hlx.patchBlockConfig) {
+    return { blockName, cssPath, jsPath };
+  }
+
+  return window.hlx.patchBlockConfig.reduce(
+    (config, fn) => (typeof fn === 'function' ? fn(config) : config),
+    { blockName, cssPath, jsPath },
+  );
+}
+
+/**
  * Loads JS and CSS for a block.
  * @param {Element} block The block element
  */
@@ -397,7 +419,8 @@ export async function loadBlock(block) {
   const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
     block.dataset.blockStatus = 'loading';
-    const { blockName } = block.dataset;
+    block.setAttribute('data-block-status', 'loading');
+    const { blockName, cssPath, jsPath } = getBlockConfig(block);
     try {
       const cssLoaded = new Promise((resolve) => {
         loadCSS(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`, resolve);
@@ -447,7 +470,7 @@ export async function loadBlocks(main) {
  * @param {Array} [breakpoints] Breakpoints and corresponding params (eg. width)
  * @returns {Element} The picture element
  */
-export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
+export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 400px)', width: '2000' }, { width: '750' }]) {
   const url = new URL(src, window.location.href);
   const picture = document.createElement('picture');
   const { pathname } = url;
@@ -604,9 +627,9 @@ export function loadFooter(footer) {
  */
 export function setup() {
   window.hlx = window.hlx || {};
-  window.hlx.RUM_MASK_URL = 'full';
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.patchBlockConfig = [];
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {

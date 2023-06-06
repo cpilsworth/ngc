@@ -5,3 +5,8 @@ node_modules/*
 
 helix-importer-ui
 .DS_Store
+.idea/.gitignore
+.idea/misc.xml
+.idea/modules.xml
+.idea/ngc.iml
+.idea/vcs.xml
