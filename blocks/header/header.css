@@ -148,7 +148,8 @@ header .nav-brand {
   font-weight: 700;
   line-height: 1;
   text-align: center;
-  order: 2
+  order: 2;
+  margin-right: auto;
 }
 
 header nav .nav-brand img {
