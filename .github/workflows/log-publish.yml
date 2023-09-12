@@ -31,7 +31,3 @@ jobs:
           curl -d '{"text": "Just published: https://www.hlx.live${{ steps.format.outputs.replaced }}"' \
              -H "Content-Type: application/json"  \
              ${{ secrets.PIPEDREAM_ENPOINT }}
-          payload: |
-            {
-              "text": "Just published: https://www.hlx.live${{ steps.format.outputs.replaced }}"
-            }
