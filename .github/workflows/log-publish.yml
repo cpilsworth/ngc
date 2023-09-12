@@ -24,10 +24,10 @@ jobs:
         run: |
           curl -d '{"text": "Just published: `${{ github.event.client_payload.path }}`"}' \
              -H "Content-Type: application/json"  \
-             ${{ secrets.PIPEDREAM_ENPOINT }}
+             ${{ secrets.PIPEDREAM_ENDPOINT }}
       - name: Notify Pipedream (Markdown)
         if: ${{ endsWith(github.event.client_payload.path, '.md') }}
         run: |
           curl -d '{"text": "Just published: https://www.hlx.live${{ steps.format.outputs.replaced }}"' \
              -H "Content-Type: application/json"  \
-             ${{ secrets.PIPEDREAM_ENPOINT }}
+             ${{ secrets.PIPEDREAM_ENDPOINT }}
